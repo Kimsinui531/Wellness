@@ -1,56 +1,141 @@
-# Welcome to your Expo app 👋
+# AquaLog
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Zero-UI 맞춤형 샤워 케어 모바일 앱 demo입니다.
 
-## Get started
+멋쟁이사자처럼 해커톤용 프로젝트이며, 현재는 Expo Go에서 확인 가능한 UI demo flow와 마이크 권한 요청 기능까지 구현되어 있습니다.
 
-1. Install dependencies
+## Tech Stack
 
-   ```bash
-   npm install
-   ```
+- React Native
+- Expo SDK 54
+- Expo Router
+- TypeScript
+- expo-audio
+- Android / iOS
 
-2. Start the app
+## 처음 실행하는 방법
 
-   ```bash
-   npx expo start
-   ```
+### 1. 필수 설치
 
-In the output, you'll find options to open the app in a
+아래 프로그램이 먼저 설치되어 있어야 합니다.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- Node.js LTS
+- Git
+- Expo Go 앱
+  - Android: Google Play Store에서 Expo Go 설치
+  - iOS: App Store에서 Expo Go 설치
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+### 2. 프로젝트 가져오기
 
 ```bash
-npm run reset-project
+git clone https://github.com/Kimsinui531/Wellness.git
+cd Wellness
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+이미 zip으로 받은 경우에는 압축을 풀고 프로젝트 폴더로 이동하면 됩니다.
 
-### Other setup steps
+### 3. dependency 설치
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+```bash
+npm install
+```
 
-## Learn more
+Windows PowerShell에서 `npm` 또는 `npx` 실행이 막히면 아래처럼 `.cmd`를 붙여 실행합니다.
 
-To learn more about developing your project with Expo, look at the following resources:
+```powershell
+npm.cmd install
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### 4. 앱 실행
 
-## Join the community
+```bash
+npx expo start -c
+```
 
-Join our community of developers creating universal apps.
+Windows PowerShell에서 `npx`가 막히면 아래 명령어를 사용합니다.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```powershell
+npx.cmd expo start -c
+```
+
+터미널에 QR 코드가 나오면 휴대폰의 Expo Go 앱으로 스캔합니다.
+
+- PC와 휴대폰은 같은 Wi-Fi에 연결되어 있어야 합니다.
+- Expo Go에서 접속하면 AquaLog 시작 화면이 보여야 합니다.
+
+## 개발 중 자주 쓰는 명령어
+
+TypeScript 오류 확인:
+
+```bash
+npx tsc --noEmit
+```
+
+Expo 프로젝트 상태 확인:
+
+```bash
+npx expo-doctor
+```
+
+캐시 초기화 후 다시 실행:
+
+```bash
+npx expo start -c
+```
+
+## 현재 구현된 기능
+
+- Start 화면
+- 피부 고민 선택 화면
+- 마이크 권한 안내 화면
+- 실제 마이크 권한 요청
+- 권한 허용 / 거부 분기
+- 권한 거부 시 설정 앱 이동
+- 권한 성공 화면
+- Waiting demo 화면
+- Measuring demo 화면
+- Result demo 화면
+
+## 아직 구현하지 않은 기능
+
+- 실제 물소리 감지
+- 실제 녹음 분석
+- dB threshold 로직
+- Backend API
+- DB 저장
+- 제품 추천 알고리즘
+- 외부 서비스 연동
+
+## 프로젝트 구조
+
+```text
+src/
+  app/
+    _layout.tsx
+    index.tsx
+  components/
+    common/
+    result/
+    shower/
+  constants/
+  hooks/
+  screens/
+  services/
+  types/
+
+figma-reference/
+```
+
+## 주의사항
+
+`figma-reference` 폴더는 Figma에서 다운로드한 디자인 참고용 코드입니다.
+
+- 수정하지 않습니다.
+- 실제 앱 코드에 그대로 복사하지 않습니다.
+- React Native + Expo + TypeScript 기준으로 새로 구현합니다.
+
+## 마이크 권한 안내
+
+현재 앱은 `expo-audio`를 사용해 OS 마이크 권한 요청만 수행합니다.
+
+AquaLog는 향후 샤워 물소리를 감지하여 샤워 시간을 자동 측정하기 위해 마이크 권한을 사용합니다. 현재 단계에서는 음성 파일을 저장하거나 서버로 전송하지 않습니다.
