@@ -14,7 +14,9 @@
 - Expo CLI added config plugins for expo-font, expo-image, expo-web-browser, and expo-status-bar.
 - React Native compatibility required `StyleSheet.absoluteFillObject` to become `StyleSheet.absoluteFill`.
 - Existing screens, microphone permission flow, timer, result UI, and design were otherwise unchanged.
-- Audio metering and automatic shower detection were not added.
+- Waiting now records to cache in DEV and shows raw Expo recorder metering about every 200 ms; no threshold or automatic detection was added.
+- iPhone confirmed Waiting → Measuring ends the mic indicator and Result → Restart → Waiting resumes metering; cache files remain OS-managed.
+- Future automatic detection must move recorder ownership above Waiting so it persists into Measuring.
 
 ## Run and verify
 
@@ -35,4 +37,4 @@ npx.cmd expo start -c
 
 - No required environment-variable names were found.
 - The user verified that the core demo flow works on an iPhone with Expo Go on 2026-09-20.
-- Permission denial, retry, and Settings flows remain unverified on-device.
+- iPhone verified AppState cleanup: inactive pause and inactive/background stop logged `isRecording=false`, active restart logged `isRecording=true`; the orange indicator disappeared, metering resumed, and two rapid home/return cycles passed. Permission denial, retry, and Settings flows remain unverified.

@@ -6,12 +6,15 @@ import { colors } from '@/constants/colors';
 import { radius } from '@/constants/radius';
 import { layoutSpacing, spacing } from '@/constants/spacing';
 import { fontSizes, fontWeights, lineHeights } from '@/constants/typography';
+import { useAudioMetering } from '@/hooks/useAudioMetering';
 
 type WaitingScreenProps = {
   onDetected: () => void;
 };
 
 export function WaitingScreen({ onDetected }: WaitingScreenProps) {
+  const metering = useAudioMetering(__DEV__);
+
   return (
     <ScreenContainer contentStyle={styles.container}>
       <AppHeader
@@ -35,6 +38,7 @@ export function WaitingScreen({ onDetected }: WaitingScreenProps) {
       </View>
 
       <View style={styles.footer}>
+        {__DEV__ && <MeteringDebugPanel metering={metering} />}
         <Pressable
           accessibilityRole="button"
           onPress={onDetected}
@@ -45,6 +49,30 @@ export function WaitingScreen({ onDetected }: WaitingScreenProps) {
         <Text style={styles.footerText}>데모 모드 · 터치로 측정을 시작합니다</Text>
       </View>
     </ScreenContainer>
+  );
+}
+
+type MeteringDebugPanelProps = {
+  metering: ReturnType<typeof useAudioMetering>;
+};
+
+function MeteringDebugPanel({ metering }: MeteringDebugPanelProps) {
+  const statusLabel = metering.isRecording ? '녹음 중' : metering.status;
+  const valueLabel = metering.metering === null ? '측정값 없음' : metering.metering.toFixed(1);
+
+  return (
+    <View style={styles.debugPanel}>
+      <Text style={styles.debugTitle}>DEV · microphone metering</Text>
+      <Text style={styles.debugText}>녹음 상태: {statusLabel}</Text>
+      <Text style={styles.debugText}>현재 metering 원시값: {valueLabel}</Text>
+      <Text style={styles.debugHint}>Expo recorder audio level · 절대 dB SPL 아님</Text>
+      {metering.error && <Text style={styles.debugError}>오류: {metering.error}</Text>}
+      {!metering.isRecording && (
+        <Pressable accessibilityRole="button" onPress={() => void metering.restart()}>
+          <Text style={styles.debugRestart}>metering 다시 시작</Text>
+        </Pressable>
+      )}
+    </View>
   );
 }
 
@@ -120,6 +148,42 @@ const styles = StyleSheet.create({
   footer: {
     paddingHorizontal: layoutSpacing.screenHorizontal,
     paddingBottom: spacing.section,
+  },
+  debugPanel: {
+    marginBottom: spacing.lg,
+    padding: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: radius.card,
+    backgroundColor: colors.surface,
+  },
+  debugTitle: {
+    marginBottom: spacing.xs,
+    color: colors.textLo,
+    fontSize: 10,
+    fontWeight: fontWeights.bold,
+  },
+  debugText: {
+    color: colors.textMd,
+    fontSize: 11,
+    fontWeight: fontWeights.medium,
+  },
+  debugHint: {
+    marginTop: spacing.xs,
+    color: colors.textLo,
+    fontSize: 10,
+  },
+  debugError: {
+    marginTop: spacing.xs,
+    color: colors.alert,
+    fontSize: 11,
+    fontWeight: fontWeights.semibold,
+  },
+  debugRestart: {
+    marginTop: spacing.sm,
+    color: colors.primary,
+    fontSize: 11,
+    fontWeight: fontWeights.bold,
   },
   demoButton: {
     width: '100%',
