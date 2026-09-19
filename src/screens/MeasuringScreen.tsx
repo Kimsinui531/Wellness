@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1F1221',
   },
   backgroundLayer: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     alignItems: 'center',
     justifyContent: 'center',
   },
