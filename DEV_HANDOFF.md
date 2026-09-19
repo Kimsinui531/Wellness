@@ -34,5 +34,5 @@ npx.cmd expo start -c
 ## Environment variables and remaining verification
 
 - No required environment-variable names were found.
-- The core demo flow was verified on an iPhone with Expo Go on 2026-09-20.
+- The user verified that the core demo flow works on an iPhone with Expo Go on 2026-09-20.
 - Permission denial, retry, and Settings flows remain unverified on-device.
